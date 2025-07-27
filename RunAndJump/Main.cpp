@@ -3,7 +3,23 @@
 void Main()
 {
 
+	Rect background{ 0,-200,2400,800 };
+
 	while (System::Update())
 	{
+		background.draw(Arg::left = Palette::Black, Arg::right = Palette::White);
+
+
+		if (KeyLeft.pressed())
+		{
+			background.x += 10;
+		}
+		if (KeyRight.pressed())
+		{
+			background.x -= 10;
+		}
+
+
+
 	}
 }
