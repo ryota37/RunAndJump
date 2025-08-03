@@ -13,14 +13,14 @@ void gravity(Circle& player)
 
 void AutoScroll(Rect& background)
 {
-	background.x -= 5;
+	background.x -= 8;
 }
 
 void AutoScroll(Array<Rect>& obstacles)
 {
 	for (auto& obstacle : obstacles)
 	{
-		obstacle.x -= 5;
+		obstacle.x -= 8;
 	}
 }
 
@@ -33,7 +33,7 @@ void PlayerJump(Circle& player, int& jumpFrame)
 
 	if (jumpFrame > 0)
 	{
-		player.moveBy(0, -10);
+		player.moveBy(0, -14);
 		jumpFrame--;
 	}
 }
@@ -48,37 +48,32 @@ void DrawObstacles(const Array<Rect>& obstacles)
 
 void Main()
 {
-
+	bool isGameOver = false;
 	Rect background{ 0,-200,7200,800 };
 	Circle player{ Scene::Center().x, 550, 30};
 	int jumpFrame = 0;
 	Array<Rect> obstacles;
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 7; ++i)
 	{
 		obstacles << Rect(i * 1000, 450, 30, 150);
 	}
 
-
-
 	while (System::Update())
 	{
 		background.draw(Arg::left = Palette::Black, Arg::right = Palette::White);
-		player.draw(Palette::Red);
-		DrawObstacles(obstacles);
 
-		AutoScroll(background);
-		AutoScroll(obstacles);
-		gravity(player);
-		PlayerJump(player, jumpFrame);
-
-		// Debug
-		if (KeyLeft.pressed())
+		if (isGameOver)
 		{
-			background.x += 10;
+			Print << U"Game Over!";
 		}
-		if (KeyRight.pressed())
+		else
 		{
-			background.x -= 10;
+			player.draw(Palette::Red);
+			DrawObstacles(obstacles);
+			AutoScroll(background);
+			AutoScroll(obstacles);
+			gravity(player);
+			PlayerJump(player, jumpFrame);
 		}
 	}
 }
