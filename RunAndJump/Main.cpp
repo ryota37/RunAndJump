@@ -2,7 +2,7 @@
 
 bool isPlayerOnGround(const Circle& player)
 {
-	if (player.y + player.r >= 550) return true;
+	if (player.y >= 550) return true;
 	return false;
 }
 
@@ -50,7 +50,8 @@ void Main()
 {
 	bool isGameOver = false;
 	Rect background{ 0,-200,7200,800 };
-	Circle player{ Scene::Center().x, 550, 30};
+	Rect ground{ 0, 550, 7200, 50 };
+	Circle player{ Scene::Center().x, 550, 30 };
 	int jumpFrame = 0;
 	Array<Rect> obstacles;
 	for (int i = 0; i < 7; ++i)
@@ -61,6 +62,7 @@ void Main()
 	while (System::Update())
 	{
 		background.draw(Arg::left = Palette::Black, Arg::right = Palette::White);
+		ground.draw(Palette::Brown);
 
 		if (isGameOver)
 		{
