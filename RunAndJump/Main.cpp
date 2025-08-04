@@ -2,7 +2,7 @@
 
 bool isPlayerOnGround(const Circle& player)
 {
-	if (player.y >= 550) return true;
+	if (player.y >= 570) return true;
 	return false;
 }
 
@@ -46,12 +46,36 @@ void DrawObstacles(const Array<Rect>& obstacles)
 	}
 }
 
+void GameOver(bool& isGameOver, const Circle& player, const Array<Rect>& obstacles)
+{
+	for (const auto& obstacle : obstacles)
+	{
+		if (player.intersects(obstacle))
+		{
+			isGameOver = true;
+			break;
+		}
+	}
+}
+
+void GameClear(bool& isGameClear, Circle& player, Rect& background)
+{
+	if (!player.intersects(background))
+	{
+		isGameClear = true;
+	}
+	else
+	{
+		isGameClear = false;
+	}
+}
+
 void Main()
 {
 	bool isGameOver = false;
+	bool isGameClear = false;
 	Rect background{ 0,-200,7200,800 };
-	Rect ground{ 0, 550, 7200, 50 };
-	Circle player{ Scene::Center().x, 550, 30 };
+	Circle player{ Scene::Center().x, 570, 30 };
 	int jumpFrame = 0;
 	Array<Rect> obstacles;
 	for (int i = 0; i < 7; ++i)
@@ -62,11 +86,16 @@ void Main()
 	while (System::Update())
 	{
 		background.draw(Arg::left = Palette::Black, Arg::right = Palette::White);
-		ground.draw(Palette::Brown);
+		GameOver(isGameOver, player, obstacles);
+		GameClear(isGameClear, player, background);
 
 		if (isGameOver)
 		{
 			Print << U"Game Over!";
+		}
+		else if (isGameClear)
+		{
+			Print << U"Game Clear!";
 		}
 		else
 		{
